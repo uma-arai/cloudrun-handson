@@ -1,0 +1,40 @@
+apiVersion: run.googleapis.com/v1
+kind: Job
+metadata:
+  name: cnsrun-batch
+spec:
+  template:
+    metadata:
+      annotations:
+        run.googleapis.com/execution-environment: gen2
+        # TODO: change for your own vpc name
+        run.googleapis.com/network-interfaces: '[{"network":"cnsrun-app", "subnetwork":"cnsrun-PROJECT_ID"}]'
+        run.googleapis.com/vpc-access-egress: all-traffic
+    spec:
+      taskCount: 1
+      parallelism: 1
+      template:
+        spec:
+          containers:
+          - image: batch
+            resources:
+              limits:
+                cpu: '1'
+                memory: 512Mi
+            env:
+              - name: DB_USER
+                value: "app"
+              - name: DB_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    key: latest
+                    name: cnsrun-app-db-password
+              - name: DB_HOST
+                value: "10.0.200.3"  # FIXME: Change DB_HOST value to actual private IP address after Cloud SQL created
+              - name: DB_PORT
+                value: "5432"
+              - name: DB_NAME
+                value: "cnsrun"
+          maxRetries: 3
+          timeoutSeconds: '600'
+          serviceAccountName: cnsrun-app-batch@PROJECT_ID.iam.gserviceaccount.com
