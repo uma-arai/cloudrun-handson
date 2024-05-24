@@ -1,0 +1,62 @@
+options:
+  logging: CLOUD_LOGGING_ONLY
+  env:
+    - "DEPLOY_ENV=$_DEPLOY_ENV"
+    - "SKAFFOLD_DEFAULT_REPO=asia-northeast1-docker.pkg.dev/$PROJECT_ID/cnsrun-app"
+
+steps:
+  - name: "gcr.io/k8s-skaffold/skaffold:v2.10.1"
+    id: "build"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |-
+        git config --global core.abbrev 8
+        cd app/${_SERVICE_NAME}/
+        skaffold build --file-output=artifacts.json --filename=skaffold.yaml
+
+#  # Chap6ハンズオンのみ使用。Binary Authorizationの証明書を作成するステップ
+#  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk:slim"
+#    id: create-attestation
+#    waitFor:
+#      - build
+#    entrypoint: "bash"
+#    args:
+#      - "-c"
+#      - |-
+#        apt-get update && apt-get install -y jq
+#        cd app/${_SERVICE_NAME}/
+#        _IMAGE_DIGEST=$(cat artifacts.json | jq -r .builds[0].tag | cut -f 2 -d "@")
+#        echo "IMAGE_DIGEST: $$_IMAGE_DIGEST"
+#        gcloud beta container binauthz attestations sign-and-create \
+#          --project=$PROJECT_ID \
+#          --artifact-url=$${SKAFFOLD_DEFAULT_REPO}/frontend@$${_IMAGE_DIGEST} \
+#          --attestor=cnsrun-attestor \
+#          --attestor-project=$PROJECT_ID \
+#          --keyversion-project=$PROJECT_ID \
+#          --keyversion-location=$_REGION \
+#          --keyversion-keyring=cnsrun-keyring \
+#          --keyversion-key=cnsrun-attestor-key \
+#          --keyversion=1
+
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk:slim"
+    id: deploy
+    waitFor:
+      - build
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |-
+        cd app/${_SERVICE_NAME}/
+        gcloud deploy releases create $$DEPLOY_ENV-$(git rev-parse --short=8 HEAD)-$(echo $BUILD_ID | cut -c1-8) \
+        --project=$PROJECT_ID \
+        --region=$_REGION \
+        --delivery-pipeline=${_PIPELINE_NAME} \
+        --build-artifacts=artifacts.json \
+        --skaffold-file=skaffold.yaml
+substitutions:
+  _SERVICE_NAME: frontend
+  _PIPELINE_NAME: cnsrun-frontend
+  _REGION: asia-northeast1
+
+timeout: 1200s

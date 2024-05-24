@@ -1,0 +1,33 @@
+apiVersion: skaffold/v3
+kind: Config
+metadata:
+  name: cnsrun-backend
+build:
+  artifacts:
+    - image: backend
+      docker:
+        dockerfile: Dockerfile
+  tagPolicy:
+    gitCommit:
+      variant: AbbrevCommitSha
+      ignoreChanges: true
+  local:
+    push: false
+    useDockerCLI: true
+    useBuildkit: true
+    concurrency: 0
+deploy:
+  cloudrun: {}
+profiles:
+  - name: main
+    activation:
+      - env: DEPLOY_ENV=main
+    build:
+      local:
+        push: true
+        useDockerCLI: true
+        useBuildkit: true
+        concurrency: 0
+    manifests:
+      rawYaml:
+        - ./cloudrun.yaml

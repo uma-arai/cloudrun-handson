@@ -1,0 +1,39 @@
+options:
+  logging: CLOUD_LOGGING_ONLY
+  env:
+    - "DEPLOY_ENV=$_DEPLOY_ENV"
+    - "SKAFFOLD_DEFAULT_REPO=asia-northeast1-docker.pkg.dev/$PROJECT_ID/cnsrun-app"
+
+steps:
+  - name: "gcr.io/k8s-skaffold/skaffold:v2.10.1"
+    id: "build"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |-
+        git config --global core.abbrev 8
+        cd app/${_SERVICE_NAME}/
+        skaffold build --file-output=artifacts.json --filename=skaffold.yaml
+
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk:slim"
+    id: deploy
+    waitFor:
+      - build
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |-
+        cd app/${_SERVICE_NAME}/
+        gcloud deploy releases create $$DEPLOY_ENV-$(git rev-parse --short=8 HEAD)-$(echo $BUILD_ID | cut -c1-8) \
+        --project=$PROJECT_ID \
+        --region=$_REGION \
+        --delivery-pipeline=${_PIPELINE_NAME} \
+        --build-artifacts=artifacts.json \
+        --skaffold-file=skaffold.yaml
+
+substitutions:
+  _SERVICE_NAME: batch
+  _PIPELINE_NAME: cnsrun-batch
+  _REGION: asia-northeast1
+
+timeout: 1200s

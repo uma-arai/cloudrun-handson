@@ -1,0 +1,69 @@
+version: '3'
+services:
+  frontend:
+    image: frontend
+    build: ./frontend
+    container_name: frontend
+    hostname: frontend
+    restart: always
+    ports:
+      - 8080:8080
+    environment:
+      BACKEND_FQDN: http://backend:8081
+    networks:
+      - container-link
+    depends_on:
+      - backend
+
+  backend:
+    image: backend
+    build: ./backend
+    container_name: backend
+    hostname: backend
+    restart: always
+    environment:
+      MIGRATION_DIR: db/migraations
+      DB_HOST: db
+      DB_USER: app
+      DB_PASSWORD: password
+      DB_NAME: cnsrun
+      DB_PORT: 5432
+    ports:
+      - 8081:8081
+    networks:
+      - container-link
+    links:
+      - db
+
+  db:
+    image: postgres:15.6
+    container_name: db
+    hostname: db
+    restart: always
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: password
+      PGPASSWORD: password
+      POSTGRES_DB: cnsrun
+      TZ: "Asia/Tokyo"
+    networks:
+      - container-link
+    ports:
+      - 5433:5432
+    volumes:
+      - postgres:/var/lib/postgresql/data
+
+volumes:
+  postgres:
+
+networks:
+  default:
+    external: true
+    #name: bridge
+  container-link:
+    #name: docker.internal
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.20.100.0/24"

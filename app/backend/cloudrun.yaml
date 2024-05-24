@@ -1,0 +1,49 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: cnsrun-backend
+  annotations:
+    run.googleapis.com/ingress: internal
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/minScale: '1'
+        autoscaling.knative.dev/maxScale: '2'
+        run.googleapis.com/execution-environment: gen2
+        # TODO: change for your own vpc name
+        run.googleapis.com/network-interfaces: '[{"network":"cnsrun-app", "subnetwork":"cnsrun-PROJECT_ID"}]'
+        run.googleapis.com/vpc-access-egress: all-traffic
+    spec:
+      containerConcurrency: 10
+      timeoutSeconds: 300
+      serviceAccountName: cnsrun-app-backend@PROJECT_ID.iam.gserviceaccount.com
+      containers:
+      - image: backend
+        ports:
+        - name: http1
+          containerPort: 8081
+#        env:
+#          - name: DB_USER
+#            value: "app"
+#          - name: DB_PASSWORD
+#            valueFrom:
+#              secretKeyRef:
+#                key: 1
+#                name: cnsrun-app-db-password
+#          - name: DB_HOST
+#            value: "10.0.200.3"  # FIXME: Change DB_HOST value to actual private IP address after Cloud SQL created
+#          - name: DB_PORT
+#            value: "5432"
+#          - name: DB_NAME
+#            value: "cnsrun"
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 512Mi
+        startupProbe:
+          timeoutSeconds: 240
+          periodSeconds: 240
+          failureThreshold: 1
+          tcpSocket:
+            port: 8081
