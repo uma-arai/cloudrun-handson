@@ -819,7 +819,7 @@ Cloud SQL のエディションの選択します。
 
 続行を押して次に進み、<walkthrough-spotlight-pointer locator="semantic({button '接続を作成'})" validationPath="/sql/instances/create">接続を作成</walkthrough-spotlight-pointer> を押して、プライベートサービスアクセスを作成します。作成には少し時間がかかります。
 
-![プライベートサービスアクセス完了](https://github.com/uma-arai/cloudrun-handson/blob/revise/images/private-service-access-complete.png?raw=true)
+![プライベートサービスアクセス完了](https://github.com/uma-arai/cloudrun-handson/blob/main/images/private-service-access-complete.png?raw=true)
 
 設定を続けます。
 
