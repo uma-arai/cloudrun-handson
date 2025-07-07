@@ -20,6 +20,9 @@
 
 ```bash
 GITHUB_USERNAME={自身のGitHubユーザ名}
+```
+
+```bash
 git clone https://github.com/${GITHUB_USERNAME}/cloudrun-handson
 ```
 
@@ -29,7 +32,7 @@ git clone https://github.com/${GITHUB_USERNAME}/cloudrun-handson
 ## **ハンズオンの一覧**
 
 ### **5章ハンズオン**
-h
+
 ```bash
 cd ~/cloudrun-handson
 teachme doc/handson_chap5.md
