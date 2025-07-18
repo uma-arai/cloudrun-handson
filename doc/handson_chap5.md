@@ -108,7 +108,6 @@ gcloud services enable \
 artifactregistry.googleapis.com \
 run.googleapis.com \
 cloudbuild.googleapis.com \
-sourcerepo.googleapis.com \
 container.googleapis.com \
 secretmanager.googleapis.com \
 cloudscheduler.googleapis.com \
