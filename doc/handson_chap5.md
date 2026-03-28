@@ -228,6 +228,8 @@ curl $FRONTEND_URL/frontend
 
 `Hello cnsrun handson's user:D`が返却されたことが確認できたら、次に進みましょう。
 
+※注意: `--allow-unauthenticated`を指定しているため公開アクセスとなるはずですが、ならない場合を確認しています。Cloud Runの画面から「セキュリティ」タブを開き、「公開アクセスを許可する」が有効になっていることを確認してください。
+
 ## **Cloud Buildの設定**
 
 <walkthrough-tutorial-duration duration=10></walkthrough-tutorial-duration>
