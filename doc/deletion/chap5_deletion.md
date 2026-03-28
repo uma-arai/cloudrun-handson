@@ -15,7 +15,7 @@
 ## **リージョン変数の設定**
 
 ```bash
-export REGION=asia-northeast1
+export REGION=asia-east1
 ```
 
 ## **Schedulerの削除**
@@ -64,7 +64,7 @@ gcloud beta deploy delivery-pipelines list --region=$REGION --format=json | jq -
 ## **Cloud Runサービスの削除**
 
 ```bash
-gcloud config set run/region asia-northeast1
+gcloud config set run/region asia-east1
 gcloud run services list --format=json | jq -r .[].metadata.name | grep cnsrun | xargs -I @ gcloud run services delete @ --quiet
 ```
 

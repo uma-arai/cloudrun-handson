@@ -2,7 +2,7 @@ options:
   logging: CLOUD_LOGGING_ONLY
   env:
     - "DEPLOY_ENV=$_DEPLOY_ENV"
-    - "SKAFFOLD_DEFAULT_REPO=asia-northeast1-docker.pkg.dev/$PROJECT_ID/cnsrun-app"
+    - "SKAFFOLD_DEFAULT_REPO=asia-east1-docker.pkg.dev/$PROJECT_ID/cnsrun-app"
 
 steps:
   - name: "gcr.io/k8s-skaffold/skaffold:v2.10.1"
@@ -34,6 +34,6 @@ steps:
 substitutions:
   _SERVICE_NAME: backend
   _PIPELINE_NAME: cnsrun-backend
-  _REGION: asia-northeast1
+  _REGION: asia-east1
 
 timeout: 1200s

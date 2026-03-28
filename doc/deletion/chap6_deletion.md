@@ -15,7 +15,7 @@
 ## **リージョン変数の設定**
 
 ```bash
-export REGION=asia-northeast1
+export REGION=asia-east1
 ```
 
 ## **Cloud Armorの削除**
