@@ -20,6 +20,9 @@
 
 ```bash
 GITHUB_USERNAME={自身のGitHubユーザ名}
+```
+
+```bash
 git clone https://github.com/${GITHUB_USERNAME}/cloudrun-handson
 ```
 
