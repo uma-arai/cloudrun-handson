@@ -28,15 +28,6 @@ git clone https://github.com/${GITHUB_USERNAME}/cloudrun-handson
 
 ## **ハンズオンの一覧**
 
-### **2時間ハンズオン（推奨）**
-
-Cloud Runの基本からセキュリティまでを2時間で効率的に学習できます。
-
-```bash
-cd ~/cloudrun-handson
-teachme doc/handson_2hours.md
-```
-
 ### **5章ハンズオン（基本編）**
 
 ```bash
