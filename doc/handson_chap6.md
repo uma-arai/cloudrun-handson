@@ -106,11 +106,11 @@ Google Cloud ConsoleからArtifact Registryのページに移動して機能をO
 
 
 ```bash
-(cd app/frontend && touch dummy && docker build -t asia-east1-docker.pkg.dev/${GOOGLE_CLOUD_PROJECT}/cnsrun-app/frontend:v2 .)
-```
-
-```bash
-docker push asia-east1-docker.pkg.dev/${GOOGLE_CLOUD_PROJECT}/cnsrun-app/frontend:v2
+(cd app/frontend && touch dummy && docker buildx build \
+  --platform linux/amd64 \
+  --push \
+  -t asia-east1-docker.pkg.dev/${GOOGLE_CLOUD_PROJECT}/cnsrun-app/frontend:v2 \
+  .)
 ```
 
 1. <walkthrough-spotlight-pointer cssSelector="[id=cfctest-section-nav-item-repositories]" validationPath="/artifacts">リポジトリ</walkthrough-spotlight-pointer> に移動します。
