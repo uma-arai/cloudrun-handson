@@ -75,7 +75,8 @@ func main() {
 
 func dbConnect() *sql.DB {
 	dsn := fmt.Sprintf(
-		"host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Tokyo",
+		// Cloud SQL側の pg_hba.conf は暗号化なし接続を拒否する設定になっており、sslmode=requireが必要
+		"host=%s user=%s password=%s dbname=%s port=%s sslmode=require TimeZone=Asia/Tokyo",
 		os.Getenv("DB_HOST"),
 		os.Getenv("DB_USER"),
 		os.Getenv("DB_PASSWORD"),
