@@ -229,8 +229,6 @@ curl $FRONTEND_URL/frontend
 
 `Hello cnsrun handson's user:D`が返却されたことが確認できたら、次に進みましょう。
 
-※注意: `--allow-unauthenticated`を指定しているため公開アクセスとなるはずですが、ならない場合を確認しています。Cloud Runの画面から「セキュリティ」タブを開き、「公開アクセスを許可する」が有効になっていることを確認してください。
-
 ## **Cloud Buildの設定**
 
 <walkthrough-tutorial-duration duration=10></walkthrough-tutorial-duration>
@@ -894,7 +892,7 @@ gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
 2. <walkthrough-spotlight-pointer locator="semantic({button 'ユーザー アカウントを追加'})" validationPath="/sql/.*">ユーザーアカウントを追加</walkthrough-spotlight-pointer>ボタンを押します。
 3. 組み込み認証を選択します。
 4. ユーザー名は`app`を入力します。
-5. ポリシーに沿って入力をします。以前に`DB_PASSWORD`としてSecret Managerに設定した値（例：DB-app-pass-1234）にします。。
+5. ポリシーに沿って入力をします。以前に`DB_PASSWORD`としてSecret Managerに設定した値（例：DB-user-pass-1234）にします。。
 6. <walkthrough-spotlight-pointer cssSelector="button[type=submit]" validationPath="/sql/.*">追加</walkthrough-spotlight-pointer>を押します。
 
 ### **3. テーブル作成**
@@ -904,7 +902,7 @@ Cloud SQLには、コンソールにある「**Cloud SQL Studio**」から直接
 作成したインスタンスの詳細画面に遷移をして、<walkthrough-spotlight-pointer cssSelector="#cfctest-section-nav-item-studio">Cloud SQL Studio</walkthrough-spotlight-pointer>に進みます。
 
 - `[データベース]`
-  - `cnsrun-app`
+  - `cnsrun`
 - `[ユーザー]`
   - `app`
 - `[パスワード]`
