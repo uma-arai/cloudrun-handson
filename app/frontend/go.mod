@@ -1,6 +1,6 @@
 module frontend
 
-go 1.22.1
+go 1.26.1
 
 require google.golang.org/api v0.174.0
 
